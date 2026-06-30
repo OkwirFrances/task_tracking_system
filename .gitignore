@@ -1,0 +1,256 @@
+# ============================================
+# TaskFlow - Git Ignore File
+# ============================================
+
+# ============================================
+# Node.js / JavaScript
+# ============================================
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build outputs
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.iml
+*.sublime-*
+.project
+.classpath
+.settings/
+
+# ============================================
+# Docker
+# ============================================
+# Docker volumes (local)
+docker-data/
+postgres-data/
+pgdata/
+*.sqlite
+*.db
+*.db-journal
+
+# Docker logs
+docker-compose.override.yml
+*.log
+*.pid
+
+# Docker secrets
+*.secret
+*.pem
+*.key
+*.crt
+
+# ============================================
+# Database / SQL
+# ============================================
+# Backup files
+*.sql
+*.sql.gz
+*.dump
+*.backup
+*.bak
+
+# Migration files (if generated)
+migrations/*.sql
+seeds/*.sql
+
+# Database clients
+*.db-shm
+*.db-wal
+
+# ============================================
+# Logs
+# ============================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+access.log
+error.log
+combined.log
+
+# ============================================
+# Temporary files
+# ============================================
+tmp/
+temp/
+*.tmp
+*.temp
+*.cache
+*.swp
+*.swo
+*~
+
+# ============================================
+# Operating System
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+*.exe
+*.dll
+*.so
+*.dylib
+
+# ============================================
+# Backend Specific
+# ============================================
+# Backend uploads
+backend/uploads/
+backend/public/uploads/
+backend/static/uploads/
+backend/temp/
+backend/data/
+
+# Backend coverage
+backend/coverage/
+backend/.nyc_output/
+backend/.cache/
+
+# Backend test results
+backend/test-results/
+backend/junit.xml
+
+# ============================================
+# Frontend Specific
+# ============================================
+# Frontend build
+frontend/dist/
+frontend/build/
+frontend/.parcel-cache/
+frontend/.cache/
+
+# Frontend coverage
+frontend/coverage/
+frontend/.nyc_output/
+
+# ============================================
+# Environment Configs (without sensitive data)
+# ============================================
+# Keep example files, ignore real ones
+*.example.*
+!.env.example
+
+# ============================================
+# SSL Certificates
+# ============================================
+*.pem
+*.crt
+*.key
+*.csr
+ssl/
+certificates/
+certs/
+*.pfx
+*.p12
+
+# ============================================
+# Archive / Backup
+# ============================================
+*.zip
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.bak
+*.old
+*.orig
+*.patch
+
+# ============================================
+# Project Specific
+# ============================================
+# Initscripts that might contain sensitive data
+init-db/*.sql
+!init-db/init.sql
+
+# User-specific files
+*.user
+*.user.*
+*.workspace
+*.workspace.*
+
+# ============================================
+# Miscellaneous
+# ============================================
+# Local testing
+*.test.js
+*.spec.js
+*.test.ts
+*.spec.ts
+__tests__/
+__mocks__/
+
+# Coverage reports
+.nyc_output/
+coverage/
+htmlcov/
+.tox/
+.pytest_cache/
+
+# Profiling
+*.cpuprofile
+*.heapsnapshot
+*.heapdump
+
+# ============================================
+# Production secrets (never commit)
+# ============================================
+# JWT Secrets
+jwt-secret.txt
+jwt-private.key
+jwt-public.key
+
+# API Keys
+*.apikey
+*.apikeys
+*.api-key
+*.api-keys
+
+# Service Accounts
+service-account.json
+service-account.key
+*.service-account.json
+*.service-account.key
+
+# Credentials
+credentials.json
+*.credentials.json
+*.credential.json
+*.auth.json
+*.auth-key.json
+
+# ============================================
+# Ignore but keep structure
+# ============================================
+!*/empty
+!.gitkeep
