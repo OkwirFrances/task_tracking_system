@@ -3,224 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Tracking System - Gantt Chart</title>
+    <title>Task Tracking System</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>📊 Task Tracking System</h1>
-            <div class="header-actions">
-                <button onclick="showAddTaskModal()" class="btn-primary">+ Add Task</button>
-                <button onclick="showProgressModal()" class="btn-success">📝 Log Progress</button>
-                <button onclick="refreshData()" class="btn-secondary">🔄 Refresh</button>
+    <div class="header">
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <h1 style="margin: 0;">🚀 Task Tracking System</h1>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <span id="userDisplay" style="color: white; font-size: 14px;"></span>
+                <button onclick="logout()" style="background-color: rgba(255,255,255,0.2); color: white; border: 1px solid white; padding: 8px 16px; border-radius: 4px; cursor: pointer;">🚪 Logout</button>
             </div>
-        </header>
-
-        <div class="summary-dashboard" id="summaryDashboard">
-            <div class="summary-card">
-                <h4>Total Tasks</h4>
-                <p id="totalTasks">0</p>
-            </div>
-            <div class="summary-card">
-                <h4>Completed</h4>
-                <p id="completedTasks">0</p>
-            </div>
-            <div class="summary-card">
-                <h4>In Progress</h4>
-                <p id="inProgressTasks">0</p>
-            </div>
-            <div class="summary-card">
-                <h4>Avg Progress</h4>
-                <p id="avgProgress">0%</p>
-            </div>
-        </div>
-
-        <div class="filters">
-            <div class="filter-group">
-                <label>Status:</label>
-                <select id="statusFilter" onchange="applyFilters()">
-                    <option value="all">All</option>
-                    <option value="pending">Pending</option>
-                    <option value="in-progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                    <option value="delayed">Delayed</option>
-                    <option value="on-hold">On Hold</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>Priority:</label>
-                <select id="priorityFilter" onchange="applyFilters()">
-                    <option value="all">All</option>
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                    <option value="critical">Critical</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>Location:</label>
-                <select id="locationFilter" onchange="applyFilters()">
-                    <option value="all">All Locations</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="gantt-container">
-            <div class="gantt-header">
-                <div class="task-name-header">Task</div>
-                <div class="gantt-timeline" id="ganttTimeline"></div>
-            </div>
-            <div id="ganttChart" class="gantt-chart"></div>
-        </div>
-
-        <div class="recent-activity">
-            <h3>Recent Activity</h3>
-            <div id="activityFeed" class="activity-feed"></div>
         </div>
     </div>
 
+    <div class="container">
+        <div class="sidebar">
+            <h3>📊 Controls</h3>
+            <button onclick="showAddTaskModal()" class="btn-primary">➕ Add Task</button>
+            <button onclick="showProgressModal()" class="btn-secondary">📝 Log Progress</button>
+            <button onclick="refreshData()" class="btn-secondary">🔄 Refresh</button>
+            <hr>
+            <h3>🔍 Filters</h3>
+            <label>Status:</label>
+            <select id="statusFilter" onchange="applyFilters()">
+                <option value="all">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+                <option value="delayed">Delayed</option>
+                <option value="on-hold">On Hold</option>
+            </select>
+            <label>Priority:</label>
+            <select id="priorityFilter" onchange="applyFilters()">
+                <option value="all">All Priorities</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+            <label>Location:</label>
+            <select id="locationFilter" onchange="applyFilters()">
+                <option value="all">All Locations</option>
+            </select>
+        </div>
+
+        <div class="main">
+            <div class="dashboard">
+                <div class="summary-card">
+                    <div class="summary-item">
+                        <h4>📊 Total Tasks</h4>
+                        <div class="summary-value" id="totalTasks">0</div>
+                    </div>
+                    <div class="summary-item">
+                        <h4>✅ Completed</h4>
+                        <div class="summary-value" id="completedTasks">0</div>
+                    </div>
+                    <div class="summary-item">
+                        <h4>🔄 In Progress</h4>
+                        <div class="summary-value" id="inProgressTasks">0</div>
+                    </div>
+                    <div class="summary-item">
+                        <h4>📈 Avg Progress</h4>
+                        <div class="summary-value" id="avgProgress">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gantt-section">
+                <h2>📅 Gantt Chart</h2>
+                <div class="gantt-timeline" id="ganttTimeline"></div>
+                <div class="gantt-chart" id="ganttChart"></div>
+            </div>
+
+            <div class="activity-section">
+                <h2>📌 Recent Activity</h2>
+                <div class="activity-feed" id="activityFeed"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
     <div id="taskModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('taskModal')">&times;</span>
+            <span class="close-btn" onclick="closeModal('taskModal')">&times;</span>
             <h2 id="modalTitle">Add New Task</h2>
             <form id="taskForm">
                 <input type="hidden" id="taskId">
-                <div class="form-group">
-                    <label>Title:</label>
-                    <input type="text" id="taskTitle" required>
+                <input type="text" id="taskTitle" placeholder="Task Title" required>
+                <textarea id="taskDescription" placeholder="Task Description"></textarea>
+                <input type="datetime-local" id="taskStartDate" required>
+                <input type="datetime-local" id="taskEndDate" required>
+                <input type="range" id="taskProgress" min="0" max="100" value="0">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <select id="taskStatus">
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                        <option value="delayed">Delayed</option>
+                        <option value="on-hold">On Hold</option>
+                    </select>
+                    <select id="taskPriority">
+                        <option value="low">Low Priority</option>
+                        <option value="medium" selected>Medium Priority</option>
+                        <option value="high">High Priority</option>
+                    </select>
                 </div>
-                <div class="form-group">
-                    <label>Description:</label>
-                    <textarea id="taskDescription" rows="3"></textarea>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Start Date:</label>
-                        <input type="datetime-local" id="taskStartDate" required>
-                    </div>
-                    <div class="form-group">
-                        <label>End Date:</label>
-                        <input type="datetime-local" id="taskEndDate" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Location:</label>
-                        <select id="taskLocation">
-                            <option value="Office">🏢 Office</option>
-                            <option value="Remote">🏠 Remote</option>
-                            <option value="Client Site">🏢 Client Site</option>
-                            <option value="Home Office">🏠 Home Office</option>
-                            <option value="On-site">🔧 On-site</option>
-                            <option value="Other">📍 Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Location Details:</label>
-                        <input type="text" id="taskLocationDetails" placeholder="Building, room, address">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Progress (%):</label>
-                        <input type="number" id="taskProgress" min="0" max="100" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Estimated Hours:</label>
-                        <input type="number" id="taskEstimatedHours" step="0.5" value="0">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Priority:</label>
-                        <select id="taskPriority">
-                            <option value="low">Low</option>
-                            <option value="medium">Medium</option>
-                            <option value="high">High</option>
-                            <option value="critical">Critical</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Status:</label>
-                        <select id="taskStatus">
-                            <option value="pending">Pending</option>
-                            <option value="in-progress">In Progress</option>
-                            <option value="on-hold">On Hold</option>
-                            <option value="completed">Completed</option>
-                            <option value="delayed">Delayed</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Assigned To:</label>
-                    <input type="text" id="taskAssignedTo" placeholder="Team member name">
-                </div>
+                <input type="text" id="taskAssignedTo" placeholder="Assigned To">
+                <select id="taskLocation">
+                    <option value="Office">🏢 Office</option>
+                    <option value="Remote">🏠 Remote</option>
+                    <option value="Client Site">🏢 Client Site</option>
+                    <option value="Home Office">🏠 Home Office</option>
+                    <option value="On-site">🔧 On-site</option>
+                    <option value="Other">📍 Other</option>
+                </select>
+                <input type="text" id="taskLocationDetails" placeholder="Location Details (Optional)">
+                <input type="number" id="taskEstimatedHours" placeholder="Estimated Hours" min="0" step="0.5">
                 <button type="submit" class="btn-primary">Save Task</button>
             </form>
         </div>
     </div>
 
+    <!-- Progress Log Modal -->
     <div id="progressModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeModal('progressModal')">&times;</span>
+            <span class="close-btn" onclick="closeModal('progressModal')">&times;</span>
             <h2>📝 Log Progress</h2>
             <form id="progressForm">
-                <div class="form-group">
-                    <label>Select Task:</label>
-                    <select id="progressTaskId" required>
-                        <option value="">Choose a task...</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>What did you do?</label>
-                    <textarea id="progressDescription" rows="3" placeholder="Describe what you accomplished..." required></textarea>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Location:</label>
-                        <select id="progressLocation">
-                            <option value="Office">🏢 Office</option>
-                            <option value="Remote">🏠 Remote</option>
-                            <option value="Client Site">🏢 Client Site</option>
-                            <option value="Home Office">🏠 Home Office</option>
-                            <option value="On-site">🔧 On-site</option>
-                            <option value="Other">📍 Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Location Details:</label>
-                        <input type="text" id="progressLocationDetails" placeholder="Building, room, address">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Progress Updated:</label>
-                        <input type="number" id="progressValue" min="0" max="100" placeholder="0-100%">
-                    </div>
-                    <div class="form-group">
-                        <label>Hours Spent:</label>
-                        <input type="number" id="progressHours" step="0.5" placeholder="Hours">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Additional Notes:</label>
-                    <textarea id="progressNotes" rows="2" placeholder="Any additional notes..."></textarea>
-                </div>
-                <button type="submit" class="btn-success">Log Progress</button>
+                <select id="progressTaskId" required>
+                    <option value="">Choose a task...</option>
+                </select>
+                <textarea id="progressDescription" placeholder="What did you do?" required></textarea>
+                <select id="progressLocation">
+                    <option value="Office">🏢 Office</option>
+                    <option value="Remote">🏠 Remote</option>
+                    <option value="Client Site">🏢 Client Site</option>
+                    <option value="Home Office">🏠 Home Office</option>
+                    <option value="On-site">🔧 On-site</option>
+                </select>
+                <input type="text" id="progressLocationDetails" placeholder="Location Details (Optional)">
+                <input type="number" id="progressValue" placeholder="Progress %" min="0" max="100">
+                <input type="number" id="progressHours" placeholder="Hours Spent" min="0" step="0.5">
+                <textarea id="progressNotes" placeholder="Additional Notes (Optional)"></textarea>
+                <button type="submit" class="btn-primary">Log Progress</button>
             </form>
         </div>
     </div>
 
+    <!-- Task Details Modal -->
     <div id="taskDetailsModal" class="modal">
-        <div class="modal-content modal-large">
-            <span class="close" onclick="closeModal('taskDetailsModal')">&times;</span>
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-btn" onclick="closeModal('taskDetailsModal')">&times;</span>
             <h2 id="detailsTitle">Task Details</h2>
             <div id="taskDetailsContent"></div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // Check authentication
+        window.addEventListener('load', () => {
+            const token = localStorage.getItem('authToken');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (!token) {
+                window.location.href = '/login.html';
+                return;
+            }
+
+            document.getElementById('userDisplay').textContent = `👤 ${user.name}`;
+            
+            // Redirect admins to admin dashboard
+            if (user.role === 'admin') {
+                // Allow but show option
+                console.log('Admin user on main dashboard');
+            }
+
+            fetchTasks();
+            fetchSummary();
+            setupEventListeners();
+            populateLocationFilter();
+        });
+
+        function logout() {
+            const token = localStorage.getItem('authToken');
+            axios.post('/api/auth/logout', {}, {
+                headers: { Authorization: `Bearer ${token}` }
+            }).catch(error => {
+                console.error('Logout error:', error);
+            }).finally(() => {
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('user');
+                window.location.href = '/login.html';
+            });
+        }
+    </script>
     <script src="app.js"></script>
 </body>
 </html>

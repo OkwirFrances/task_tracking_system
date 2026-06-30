@@ -1,19 +1,29 @@
-const sequelize = require('../config/database');
 const Task = require('./Task');
 const ProgressLog = require('./ProgressLog');
+const User = require('./User');
 
 // Define associations
-Task.hasMany(ProgressLog, { 
+Task.hasMany(ProgressLog, {
   foreignKey: 'taskId',
-  as: 'ProgressLogs'
+  as: 'ProgressLogs',
 });
-ProgressLog.belongsTo(Task, { 
+
+ProgressLog.belongsTo(Task, {
   foreignKey: 'taskId',
-  as: 'Task'
+});
+
+Task.belongsTo(User, {
+  foreignKey: 'userId',
+  as: 'creator',
+});
+
+User.hasMany(Task, {
+  foreignKey: 'userId',
+  as: 'createdTasks',
 });
 
 module.exports = {
-  sequelize,
   Task,
-  ProgressLog
+  ProgressLog,
+  User,
 };
